@@ -1,0 +1,2 @@
+# RelativisticIllumination
+Calculations around relativistic illumination effects
