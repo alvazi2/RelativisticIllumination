@@ -10,6 +10,7 @@ The calculations are done in Jupyter notebooks with Python programming.
 ## Jupyter notebook *MoonSweep*
 This notebook does analytical calculations for the following scenario:
 - An observer on Earth sweeps a laser pointer with constant angular speed across the surface of the Moon, along a straight path through the center of the observed Moon disk.
+
 Notebook details:
 - Calculate the time when the laser ray arrives at each point of the path that is traced by the beam on the Moon's surface.
 - Plot the data.
