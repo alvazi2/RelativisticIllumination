@@ -15,6 +15,8 @@ This notebook does analytical calculations for the following scenario:
   Moon, along a straight path through the center of the observed Moon disk.
 
 Notebook details:
+- Draw the geometry &mdash; sweep angle, path length, latitude, angle of incidence &mdash; as a
+  labelled vector diagram.
 - Derive the Earth&ndash;Moon-surface distance as a function of the sweep angle.
 - Calculate the time when the laser ray arrives at each point of the path that is traced by the
   beam on the Moon's surface.

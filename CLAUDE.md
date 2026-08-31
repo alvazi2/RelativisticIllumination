@@ -57,6 +57,12 @@ These generalize beyond any one notebook.
   into branches at the fold (`d(arrival)/d(departure) = 0`, which is the pair-creation event).
 - **Root-finding uses brackets, not initial guesses.** `bisect`, `signChanges` and `minimise` are
   defined in `MoonSweep.ipynb` and are worth copying. A bare `nsolve` guess converges by luck here.
+- **Explanatory diagrams are Matplotlib line art shown as inline SVG** (`fig.savefig(buf,
+  format='svg', bbox_inches='tight')` → `IPython.display.SVG`), so they stay sharp at any zoom while
+  the data plots stay PNG. Place every point in such a diagram with the derived symbolic expressions
+  rather than by hand, and assert the same geometric invariants on it that the calculation asserts.
+  A schematic may exaggerate a ratio for legibility; say so in the title, and show the true
+  proportions alongside.
 - Use plain-language identifiers matching the physics (`pathLength`, `surfaceAngle`, `sweepAngle`,
   `pointSpeed`), and `#` comments that state the physical meaning rather than the code's mechanics.
 
@@ -98,6 +104,10 @@ Geometry is Moon-centric: `a` transverse to the Earth–Moon axis, `b` along it 
 Moon's centre *towards Earth*. The near-side (illuminated) ray–sphere root is selected by
 `L(alpha=0) == D - R`. `SweepCase(k, label)` lambdifies the expressions and locates the events
 (`tStar`, `tClose`, `cCross`, `tSlow`); `plotCase` draws the branch-split parametric figure.
+`drawGeometry(ratio)` (§3.1) renders the labelled geometry as SVG — it draws the Moon at `D/R = 2.4`
+instead of 220 so the angles are visible, but locates each point with `pathLength`/`surfaceAngle` at
+the drawing's `D` and `R`, and re-asserts `L(0) = D - R`, the point being on the sphere, and `beta`
+being the centre angle.
 
 Domain is departure time `t ∈ [0, T]`, `T = 0.01 s` — *not* arrival time `tau ≈ 1.27 s`. Sign
 conventions: `omega < 0` (sweep runs `+alpha_max → -alpha_max`); `v < 0` means the spot moves with
