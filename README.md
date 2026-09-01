@@ -77,7 +77,7 @@ intersection point of a pair of scissors; no photon overtakes another.
 ### Running it
 
 The notebook needs only SymPy, NumPy and Matplotlib (no SciPy). It was last run under Python 3.13.1
-with sympy 1.13.3, numpy 2.2.2 and matplotlib 3.10.0.
+with sympy 1.14.0, numpy 2.5.2 and matplotlib 3.10.0.
 
 ```
 jupyter notebook MoonSweep.ipynb

@@ -77,6 +77,15 @@ These generalize beyond any one notebook.
   `.evalf(subs=...)` calls to force it through is the old broken idiom — do not reintroduce it.
 - **`limit()` may not terminate** on large derived expressions (7+ minutes on the MoonSweep speed
   expression). Demonstrate limits numerically instead, and say so in the notebook.
+- **The limb is a tangency, and float64 cannot sit on it.** At `alpha = +-alpha_max` the ray-sphere
+  discriminant `R^2 - D^2 sin^2(alpha)` is analytically zero, so a *rounded* `alpha_max` puts it one
+  ulp negative: `sqrt` then returns a complex number (SymPy) or `nan` (lambdified to NumPy), and
+  every quantity at the limb is lost — `float()` raises `TypeError: Cannot convert complex to
+  float`, and a `bisect` bracket built on it dies with `no sign change ... f = nan, nan`. This is
+  version-sensitive: it surfaced on the upgrade to sympy 1.14 / numpy 2.5, having been latent
+  before. Evaluate limb quantities via `limbValue(f, values)`, which keeps `alpha_max` symbolic so
+  `sin(asin(R/D))` cancels to `R/D` and the discriminant is exactly zero before any number goes in.
+  Never feed a float `alpha_max` (or `t = 0` / `t = T`) to the lambdified expressions.
 - **Float64 constants destroy high-precision limits.** Rounding a constant displaces a singular point
   by ~1e-16, so evaluating closer than that measures the rounding error, not the limit — and raising
   `evalf` precision does not help. Build such checks from exact `Rational`/`Integer` values.
@@ -107,7 +116,8 @@ Moon's centre *towards Earth*. The near-side (illuminated) ray–sphere root is 
 `drawGeometry(ratio)` (§3.1) renders the labelled geometry as SVG — it draws the Moon at `D/R = 2.4`
 instead of 220 so the angles are visible, but locates each point with `pathLength`/`surfaceAngle` at
 the drawing's `D` and `R`, and re-asserts `L(0) = D - R`, the point being on the sphere, and `beta`
-being the centre angle.
+being the centre angle. `limbValue(f, values)` evaluates a closed form exactly at the limb; both
+`tau0` and `tauEnd` in `SweepCase` come from it, since `tau(0)` and `tau(T)` land on the tangency.
 
 Domain is departure time `t ∈ [0, T]`, `T = 0.01 s` — *not* arrival time `tau ≈ 1.27 s`. Sign
 conventions: `omega < 0` (sweep runs `+alpha_max → -alpha_max`); `v < 0` means the spot moves with
