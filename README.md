@@ -22,6 +22,8 @@ Notebook details:
   beam on the Moon's surface.
 - Calculate the speed of the illuminated spot as it travels across the Moon's surface.
 - Plot the data.
+- Draw the photon front &mdash; the string of photons the sweep has in flight &mdash; meeting the
+  Moon at six moments, so the doubling can be seen happening in space.
 
 This visualizes the relativistic image doubling that happens for arrival times that are realized by
 two scenarios: early departure but longer path vs later departure but shorter path. Nemiroff's book
@@ -46,6 +48,29 @@ v = u / (1 + (k/c) dL/dt)
 with `u` the geometric aim-point speed and `k` the number of light-travel legs makes the mechanism
 explicit. The denominator is the light-delay compression factor &mdash; the same `1/(1 - B cos T)`
 that makes astrophysical jets look superluminal.
+
+### The photon front
+
+The sweep does not emit one photon but a string of them, and at any moment that string is a curve in
+space: the photon that left at `t` has covered `c(tau - t)` along the aim direction `alpha(t)`. The
+illuminated points are where that curve meets the sphere, so the number of spots is the number of
+solutions of
+
+```
+c (tau - t) = L(alpha(t))
+```
+
+A double root of that needs `1 + (1/c) dL/dt = 0`, which is exactly the fold `dtau/dt = 0`. A double
+root against a sphere is a tangency &mdash; so **pair creation is the instant the photon front stops
+missing the Moon and grazes it**, and the picture is an independent route to the same `t*`. The
+notebook asserts the tangency to 5e-11 km.
+
+At the true `D/R = 220` the front is almost straight: it bends 7.4 km away from the chord through its
+ends, 0.16 % of that chord's 4575 km. A flat front tilted so that it advances at `c` while the aim
+point runs `|omega| D` across it touches the sphere at `arctan(c/(|omega| D)) = 40.80` deg, against
+the exact `40.73` deg. The notebook therefore draws the construction twice: once at true proportions,
+and once at `D/R = 8` where the bend is visible, with the sweep rate chosen to keep the real
+sub-Earth spot speed.
 
 ### Results
 

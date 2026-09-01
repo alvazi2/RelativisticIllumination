@@ -119,6 +119,19 @@ the drawing's `D` and `R`, and re-asserts `L(0) = D - R`, the point being on the
 being the centre angle. `limbValue(f, values)` evaluates a closed form exactly at the limb; both
 `tau0` and `tauEnd` in `SweepCase` come from it, since `tau(0)` and `tau(T)` land on the tangency.
 
+§6 draws the same physics in space: the **photon front**, the string of photons the sweep has in
+flight, whose intersections with the sphere are the live spots. `FrontCase(values, sweepRate, label)`
+is the `SweepCase` of that section — same shape, but parameterized over the *system* rather than over
+`k`, so the true Earth–Moon values and an exaggerated schematic cost one call each. Its `front(tau)`
+clips each photon's radius to `L`, so the landed ones freeze on the surface as the swept trail;
+`spots(tau, extra)` brackets the roots of `tau(t) = tau` *at the fold*, so it returns 0, 1 or 2 —
+that count is the doubling. `drawFrontGrid` renders the six-panel SVG for either case.
+`sweepRateFor(values, subEarthSpeed)` picks the schematic's `omega` so its sub-Earth spot keeps the
+true `1.153076 c`; only `D/R` is faked. Two more limb traps live here: `L(t)` is `nan` at `t = 0` and
+`t = T`, so `front` overwrites those two entries with `limbPath` under `np.errstate(all='ignore')`
+(the warning is otherwise captured into the committed output), and `FrontCase.latitude` returns
+`±(90° - alpha_max)` at the limbs rather than calling the lambdified `beta`.
+
 Domain is departure time `t ∈ [0, T]`, `T = 0.01 s` — *not* arrival time `tau ≈ 1.27 s`. Sign
 conventions: `omega < 0` (sweep runs `+alpha_max → -alpha_max`); `v < 0` means the spot moves with
 the sweep, `v > 0` is the backward-running spot.
@@ -135,7 +148,18 @@ Reference values, confirmed independently with mpmath at 30–60 digits:
 | sub-Earth spot speed | `-1.153076 c` | `-1.153076 c` |
 
 Geometric invariants: `L(0) = D - R = 380762.5 km`, `L(alpha_max) = sqrt(D²-R²) = 382496.0537 km`,
-`beta` at the limb `= 90° - alpha_max = 89.739734°`.
+`beta` at the limb `= 90° - alpha_max = 89.739734°`. And, from §6: **at `t*` the photon front is
+tangent to the sphere** — asserted to `5e-11 km` in radius and `4e-8` in `cos(radius, front)`. That
+is not a coincidence to be admired but the same equation: the front meets the sphere where
+`c(tau - t) = L(alpha(t))`, and a double root of that is `1 + (1/c) dL/dt = 0`, i.e. `dtau/dt = 0`.
+It is the notebook's second, purely geometric route to `t*`.
+
+§6 reference values: the front departs from the straight chord through its ends by `7.43 km` in
+`4575.02 km` (0.162 %), so at the true `D/R = 220` it is a straight tilted chord translating at `c`;
+the flat-front estimate `arctan(c/(|omega| D)) = 40.8043°` against the exact `40.7315°`. The
+schematic at `D/R = 8` gives `beta* = 35.48°`, `t*/T = 0.1784`, window/sweep `0.2308`, bend `4.551 %`
+(true: `40.73°`, `0.1726`, `0.2091`, `0.162 %`) — exaggerating the ratio keeps the shape, not the
+numbers, so say so in the title.
 
 The sub-Earth speed is identical for both `k` because `dL/dt = 0` there, so the leg count cancels —
 a free check that `k` is threaded correctly.
